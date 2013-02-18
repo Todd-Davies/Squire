@@ -9,15 +9,19 @@ What it does
 
 At the moment, it does 
 the following:
+
 	1. It first polls Schooltraq.com via the api (http://help.schooltraq.com/kb/schooltraq-api/) and gets all of my active (i.e. not archived) assignments.
 
 	2. It iterates through the assignments, looking for specific triggers. At the moment, the only trigger is if the assignment name starts with 'Essay on'.
 
 	3. If a trigger is found for an assignment, then something happens.
 
-The only current trigger (as said before, when the assignment name begins with 'Essay on') creates a new .tex file in the following place: 
+The only current trigger (as said before, when the assignment name begins with 'Essay on') creates a new .tex file in the following place:
+
 `/Apps/Squire/Homework/<Class name>/Essays/<Essay title>/<Essay title>.tex` 
+
 The <Essay title> is simply the text after 'Essay on ' in the assignment title. The .tex file contains a template with some commonly used packages imported, a page header, and an essay plan.
+
 The essay title and author (the dropbox user display name) automatically filled in too. I have a cron job running the script every hour on my Raspberry Pi, which should strike the balance between keeping things up to date and pestering the Schooltraq and Dropbox servers.
 
 In the future
