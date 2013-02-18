@@ -1,0 +1,37 @@
+\documentclass{article}
+
+\usepackage[normalem]{ulem}
+\usepackage{fancyhdr}
+\usepackage[parfill]{parskip}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{multicol}
+\usepackage[version=3]{mhchem}
+\usepackage{pifont}
+\pagestyle{fancyplain}
+
+\newcommand{\tick}{\ding{52}}
+
+\pgfplotsset{compat=1.7}
+
+\title{ $title }
+\author{ $author }
+\date{\today}
+
+\begin{document}
+
+\rhead{ $title }
+\lhead{\today}
+
+\maketitle
+
+\section*{Plan}
+\thispagestyle{empty}
+
+%TODO:Write essay plan
+
+\section*{Essay}
+
+%TODO:Write essay
+
+\end{document}
