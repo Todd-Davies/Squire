@@ -3,10 +3,10 @@ from cStringIO import StringIO
 from string import Template
 from dropbox import client, rest, session
 
-APP_KEY = "." #'ykbwjy6ttncuosa'
-APP_SECRET = "." #'7r6r036gr06v094'
-ACCESS_TYPE = "." #'app_folder'
-STQ_API_KEY = "." #'stq_Todd_nRnxn228kmoVRaqwrjkjL5EOL1oVOGf6'
+APP_KEY = "."
+APP_SECRET = "."
+ACCESS_TYPE = "."
+STQ_API_KEY = "."
 SECRETS_FILE = "secrets.txt"
 
 def loadSecrets():
