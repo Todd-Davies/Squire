@@ -12,7 +12,7 @@ the following:
 
 	1. It first polls Schooltraq.com via the api (http://help.schooltraq.com/kb/schooltraq-api/) and gets all of my active (i.e. not archived) assignments.
 
-	2. It iterates through the assignments, looking for specific triggers. At the moment, the only trigger is if the assignment name starts with 'Essay on'.
+	2. It iterates through the assignments, looking for specific triggers.
 
 	3. If a trigger is found for an assignment, then something happens.
 
