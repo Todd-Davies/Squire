@@ -2,12 +2,13 @@ import cmd, locale, os, shlex, Assignment, getAssignments, dropbox, json
 from cStringIO import StringIO
 from string import Template
 from dropbox import client, rest, session
+import search
 
 APP_KEY = "."
 APP_SECRET = "."
 ACCESS_TYPE = "."
 STQ_API_KEY = "."
-SECRETS_FILE = "secrets.txt"
+SECRETS_FILE = "/home/pi/squire/secrets.txt"
 
 def loadSecrets():
 	try:
@@ -36,7 +37,7 @@ def loadSecrets():
 
 class StoredSession(session.DropboxSession):
     """a wrapper around DropboxSession that stores a token to a file on disk"""
-    TOKEN_FILE = "token_store.txt"
+    TOKEN_FILE = "/home/pi/squire/token_store.txt"
 
     def load_creds(self):
         try:
@@ -117,4 +118,12 @@ for a in assignments:
 			else:
 				print("> Error - " + e) #Something went wrong
 			pass
+	elif a.name[:8].lower()=="research" and a.done=="false" and a.archived=="false" and a.notes.find("**Squire** found these links:")==-1:
+		print("Trigger found - " + "doing research on for assignment id " + a.id)
+		research = search.googleAssignment(a.name[9:])
+		a.notes += "\n**Squire** found these links:\n" + research
+		if getAssignments.updateAssignment(a,STQ_API_KEY):
+			print("> Links found succesfully")
+		else:
+			print("> Unable to research '" + a.name[9:] + "'")
 print("---Squire has finished---")

@@ -1,4 +1,5 @@
 token_store.txt
 secrets.txt
+log.txt
 *.pyc
 dropbox-python-sdk-1.5.1/*
