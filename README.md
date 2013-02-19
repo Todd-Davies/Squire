@@ -28,6 +28,8 @@ In the future
 ------------------ 
 There is a lot of scope for more triggers. For example, if the assignment started with 'research ' then the script could automatically pick put some keywoards and google them, placing popular links in the notes of the assignment on Schooltraq.
 
+Another example of a possible use is if the user was taking a module in, say Java programming, Squire could automatically set up template .java files and initialise a git repo in a new folder inside that course folder. There are lots of possibilities.
+
 On the subject of triggers, it'd be nice if the triggers weren't just from Schooltraqq either, but could come from any API. 
 
 I may implement a bloom filter to keep track of what assignments I've already processed so I don't end up wasting CPU cycles, API requests or accidentally overwriting files (though since bloom filters return false positives, this shouldn't be relied upon).
