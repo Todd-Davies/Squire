@@ -12,7 +12,7 @@ the following:
 
 	1. It first polls Schooltraq.com via the api (http://help.schooltraq.com/kb/schooltraq-api/) and gets all of my active (i.e. not archived) assignments.
 
-	2. It iterates through the assignments, looking for specific triggers. At the moment, the only trigger is if the assignment name starts with 'Essay on'.
+	2. It iterates through the assignments, looking for specific triggers.
 
 	3. If a trigger is found for an assignment, then something happens.
 
@@ -30,8 +30,6 @@ In the future
 ------------------ 
 There is a lot of scope for more triggers. For example, if the user was taking a module in, say Java programming, Squire could automatically set up template .java files and initialise a git repo in a new folder inside that course folder. There are lots of possibilities.
 
-On the subject of triggers, it'd be nice if the triggers weren't just from Schooltraqq either, but could come from any API. 
+On the subject of triggers, it'd be nice if the triggers weren't just from Schooltraq either, but could come from any API. 
 
 I may implement a bloom filter to keep track of what assignments I've already processed so I don't end up wasting CPU cycles, API requests or accidentally overwriting files (though since bloom filters return false positives, this shouldn't be relied upon).
-
-I'll open source the tool soon, hopefully I'll remember to abstract my app secret and API keys into another file behind gitignore. This will have the added benifit of making it easier to change the tool to work with multiple users.
