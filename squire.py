@@ -3,6 +3,7 @@ from cStringIO import StringIO
 from string import Template
 from dropbox import client, rest, session
 import search
+import datetime
 
 APP_KEY = "."
 APP_SECRET = "."
@@ -75,6 +76,8 @@ def fillInTemplate(templateType, asn):
 	return (s.safe_substitute(title=asn.name, author=str(dropboxClient.account_info()['display_name'])))
 	
 print("---Squire---")
+now = datetime.datetime.now()
+print("Started on " + now.strftime("%Y-%m-%d %H:%M:%S"))
 print("Loading application secrets")
 loadSecrets()
 print("Loading dropbox credentials")
@@ -126,4 +129,6 @@ for a in assignments:
 			print("> Links found succesfully")
 		else:
 			print("> Unable to research '" + a.name[9:] + "'")
-print("---Squire has finished---")
+now = datetime.datetime.now()
+print("Finished on " + now.strftime("%Y-%m-%d %H:%M:%S"))
+#print("---Squire has finished---")
