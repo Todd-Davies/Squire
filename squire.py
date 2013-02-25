@@ -1,7 +1,8 @@
-import cmd, locale, os, shlex, Assignment, getAssignments, dropbox, json
+import cmd, locale, os, shlex, dropbox, json, Trigger_Schooltraq_Essay, Trigger_Schooltraq_Research
 from cStringIO import StringIO
 from string import Template
 from dropbox import client, rest, session
+from Schooltraq import Assignment, getAssignments
 import search
 import datetime
 
@@ -93,42 +94,16 @@ print("Downloading Schooltraq assignments")
 assignments = getAssignments.getAssignments(STQ_API_KEY);
 print(str(len(assignments)) + " assignments found")
 print("Analysing assignments for triggers")
+essayTrigger = Trigger_Schooltraq_Essay.Trigger_Schooltraq_Essay(None, dropboxClient)
+researchTrigger = Trigger_Schooltraq_Research.Trigger_Schooltraq_Research(None, dropboxClient)
 for a in assignments:
-	if a.name[:8].lower()=='essay on' and a.done=="false" and a.archived=="false":
-		print("Trigger found - " + "Creating essay template for assignment id " + a.id)
-		path = "Homework/" + a.classname.replace (" ", "_") + "/Essays/" + a.name[9:].replace (" ", "_")
-		gen = fillInTemplate('essay', a)
-		try:
-			dropboxClient.file_create_folder(path)
-		except dropbox.rest.ErrorResponse, e:
-			pass
-		output = StringIO(gen)
-		#Get the metadata for the file to see if it's there
-		try:
-			metadata = dropboxClient.metadata(path + "/" + a.name[9:].replace (" ", "_") + ".tex");
-			if (metadata.get("bytes", 0) == 0): #The file has 0 bytes
-				if (metadata.get("is_deleted", False) == True): #The file is deleted
-					response = dropboxClient.put_file(path + "/" + a.name[9:].replace (" ", "_") + ".tex", output)
-					print("> Template created successfully")
-				else:
-					print("> Error - a file with that name already exists") #File already exists (just with 0 bytes)
-			else:
-				print("> Nope I've already created that template") #File already exists
-		except dropbox.rest.ErrorResponse, e:
-			if e.status == 404: #Good, the file wasn't there in the first place
-				response = dropboxClient.put_file(path + "/" + a.name[9:].replace (" ", "_") + ".tex", output)
-				print("> Template created successfully")
-			else:
-				print("> Error - " + e) #Something went wrong
-			pass
-	elif a.name[:8].lower()=="research" and a.done=="false" and a.archived=="false" and a.notes.find("**Squire** found these links:")==-1:
+	essayTrigger.setAssignment(a)
+	researchTrigger.setAssignment(a)
+	if essayTrigger.isTriggered():
+		print("Trigger found for asn id: " + a.id)
+		essayTrigger.runTrigger()
+	elif researchTrigger.isTriggered():
 		print("Trigger found - " + "doing research on for assignment id " + a.id)
-		research = search.googleAssignment(a.name[9:])
-		a.notes += "\n**Squire** found these links:\n" + research
-		if getAssignments.updateAssignment(a,STQ_API_KEY):
-			print("> Links found succesfully")
-		else:
-			print("> Unable to research '" + a.name[9:] + "'")
+		researchTrigger.runTrigger(STQ_API_KEY)
 now = datetime.datetime.now()
 print("Finished on " + now.strftime("%Y-%m-%d %H:%M:%S"))
-#print("---Squire has finished---")
