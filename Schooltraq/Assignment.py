@@ -1,7 +1,7 @@
 class Assignment:
-    def __init__(self,id,name,classid,classname,classcolor,due,notes,important,done,archived):
-        self.id = id
-        self.name = name
+	def __init__(self,id,name,classid,classname,classcolor,due,notes,important,done,archived):
+		self.id = id
+		self.name = name
 		self.classid = classid
 		self.classname = classname
 		self.classcolor = classcolor

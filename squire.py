@@ -1,8 +1,9 @@
-import cmd, locale, os, shlex, dropbox, json, Trigger_Schooltraq_Essay, Trigger_Schooltraq_Research
+import cmd, locale, os, shlex, dropbox, json
 from cStringIO import StringIO
 from string import Template
 from dropbox import client, rest, session
 from Schooltraq import Assignment, getAssignments
+from Triggers import Trigger_Schooltraq_Essay, Trigger_Schooltraq_Research
 import search
 import datetime
 
