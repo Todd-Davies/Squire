@@ -9,9 +9,13 @@ class Trigger_Schooltraq_Research:
 	def setAssignment(self, newAssignment):
 		self.assignment = newAssignment
 
-	def isTriggered(self):
+	def isTriggered(self, printOut=True, printPrefix="> "):
 		a = self.assignment
-		return (a.name[:8].lower()=="research" and a.done=="false" and a.archived=="false" and a.notes.find("**Squire** found these links:")==-1)
+		if a.name[:8].lower()=="research" and a.done=="false" and a.archived=="false" and a.notes.find("**Squire** found these links:")==-1:
+			if printOut:
+				print(printPrefix + "Trigger found - " + "doing research on for assignment id " + a.id)
+			return True
+		return False
 
 	def runTrigger(self, stq_api_key, printPrefix="> "):
 		#Do the research
@@ -20,6 +24,6 @@ class Trigger_Schooltraq_Research:
 		self.assignment.notes += "\n**Squire** found these links:\n" + research
 		#Try and update the assignment
 		if updateAssignment.updateAssignment(self.assignment, stq_api_key):
-			print(printPrefix + "Research done succesfully")
+			print(printPrefix + "Research done successfully")
 		else:
 			print(printPrefix + "Unable to research assignemnt - schooltraq API request failed")

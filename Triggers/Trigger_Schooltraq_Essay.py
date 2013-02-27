@@ -47,9 +47,13 @@ class Trigger_Schooltraq_Essay:
 	def uploadEssay(self, essayFile):
 		return self.dropboxClient.put_file(self.essayPath, essayFile)
 
-	def isTriggered(self):
+	def isTriggered(self, printOut=True, printPrefix="> "):
 		a = self.assignment
-		return (a.name[:8].lower()=='essay on' and a.done=="false" and a.archived=="false" and self.isEssayPathFree())
+		if a.name[:8].lower()=='essay on' and a.done=="false" and a.archived=="false" and self.isEssayPathFree():
+			if printOut:
+				print(printPrefix + "Trigger found for asn id: " + a.id)
+			return True
+		return False
 
 	def runTrigger(self, printPrefix="> "):
 		a = self.assignment
@@ -61,7 +65,7 @@ class Trigger_Schooltraq_Essay:
 		if self.isEssayPathFree():
 			try:
 				response = self.uploadEssay(essayFile)
-				print(printPrefix + "template created succesfully: " + response["size"])
+				print(printPrefix + "Template created successfully: " + response["size"])
 			except dropbox.rest.ErrorResponse, e:
 				print(printPrefix + "ERROR: couldn't create template: " + str(e.status) + " - " + e.reason)
 		else:

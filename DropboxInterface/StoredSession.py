@@ -5,11 +5,12 @@ class StoredSession(session.DropboxSession):
 	"""a wrapper around DropboxSession that stores a token to a file on disk"""
 	TOKEN_FILE = "/home/pi/squire/token_store.txt"
 
-	def load_creds(self):
+	def load_creds(self, printOutput):
 		try:
 			stored_creds = open(self.TOKEN_FILE).read()
 			self.set_token(*stored_creds.split('|'))
-			print("Credentials loaded successfully")
+			if printOutput:
+				print("Credentials loaded successfully")
 		except IOError:
 			pass # don't worry if it's not there
 

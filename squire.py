@@ -34,39 +34,37 @@ def loadSecrets():
 				else:
 					print("Warning - malformed secrets file")
 				count += 1
-			print("Credentials loaded successfully")
+			#print("Credentials loaded successfully")
 		except IOError:
 			print("Error - no secrets.txt file found")
 			exit()
 	
-print("---Squire---")
+#print("---Squire---")
 now = datetime.datetime.now()
 print("Started on " + now.strftime("%Y-%m-%d %H:%M:%S"))
-print("Loading application secrets")
+#print("Loading application secrets")
 loadSecrets()
-print("Loading dropbox credentials")
+#print("Loading dropbox credentials")
 sess = StoredSession.StoredSession(APP_KEY,APP_SECRET,ACCESS_TYPE)
 dropboxClient = client.DropboxClient(sess)
 
-sess.load_creds()
+sess.load_creds(False)
 
 if not sess.is_linked():
 	sess.link()
 
-print("Downloading Schooltraq assignments")
-assignments = getAssignments.getAssignments(STQ_API_KEY);
-print(str(len(assignments)) + " assignments found")
-print("Analysing assignments for triggers")
+#print("Downloading Schooltraq assignments")
+assignments = getAssignments.getAssignments(STQ_API_KEY)
+#print(str(len(assignments)) + " assignments found")
+#print("Analysing assignments for triggers")
 essayTrigger = Trigger_Schooltraq_Essay.Trigger_Schooltraq_Essay(None, dropboxClient)
 researchTrigger = Trigger_Schooltraq_Research.Trigger_Schooltraq_Research(None, dropboxClient)
 for a in assignments:
 	essayTrigger.setAssignment(a)
 	researchTrigger.setAssignment(a)
 	if essayTrigger.isTriggered():
-		print("Trigger found for asn id: " + a.id)
 		essayTrigger.runTrigger()
 	elif researchTrigger.isTriggered():
-		print("Trigger found - " + "doing research on for assignment id " + a.id)
 		researchTrigger.runTrigger(STQ_API_KEY)
 now = datetime.datetime.now()
 print("Finished on " + now.strftime("%Y-%m-%d %H:%M:%S"))
