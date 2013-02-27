@@ -38,27 +38,30 @@ def loadSecrets():
 		except IOError:
 			print("Error - no secrets.txt file found")
 			exit()
-	
-#print("---Squire---")
+
+#Log the start time
 now = datetime.datetime.now()
 print("Started on " + now.strftime("%Y-%m-%d %H:%M:%S"))
-#print("Loading application secrets")
+
+#Load the API credentials etc
 loadSecrets()
-#print("Loading dropbox credentials")
 sess = StoredSession.StoredSession(APP_KEY,APP_SECRET,ACCESS_TYPE)
 dropboxClient = client.DropboxClient(sess)
-
 sess.load_creds(False)
-
 if not sess.is_linked():
 	sess.link()
 
-#print("Downloading Schooltraq assignments")
+#Download the assignments from Schooltraq
 assignments = getAssignments.getAssignments(STQ_API_KEY)
-#print(str(len(assignments)) + " assignments found")
-#print("Analysing assignments for triggers")
+
+#Create the triggers for the assignments
 essayTrigger = Trigger_Schooltraq_Essay.Trigger_Schooltraq_Essay(None, dropboxClient)
 researchTrigger = Trigger_Schooltraq_Research.Trigger_Schooltraq_Research(None, dropboxClient)
+
+#Log the number of assignments at this time
+print("> " + str(len(assignments)) + " assignments found")
+
+#Analyse the assignments
 for a in assignments:
 	essayTrigger.setAssignment(a)
 	researchTrigger.setAssignment(a)
@@ -66,5 +69,7 @@ for a in assignments:
 		essayTrigger.runTrigger()
 	elif researchTrigger.isTriggered():
 		researchTrigger.runTrigger(STQ_API_KEY)
+
+#Log the finish time
 now = datetime.datetime.now()
 print("Finished on " + now.strftime("%Y-%m-%d %H:%M:%S"))
