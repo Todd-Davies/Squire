@@ -12,11 +12,6 @@ def getAssignments(api_key):
         asn_json_object = asn_request.json();
         crs_json_object = crs_request.json();
 
-	#print(api_key)
-
-        #print(asn_request.text)
-        #print(crs_request.text)
-
         assignments = []
 
         for text in asn_json_object["assignments"]:
